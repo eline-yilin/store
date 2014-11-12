@@ -1,0 +1,29 @@
+{>"layouts/master" /}
+
+{<body}
+
+
+   					{#url}
+   							<img style='width:100%' id='img'  src={.} />
+   							<div style='text-align:center;position:fixed;top:50%;right:10px;'>
+   							<a onclick='zoomin("#img");'><i class='icon icon-plus-sign'></i></a>
+   							<a onclick='zoomout("#img");'><i class='icon icon-minus-sign'></i></a>
+   							</div>
+		  
+                    {/url}
+<script>
+function zoomin(id)
+{
+var width = $(id).width();
+width = width*1.25;
+$(id).width(width);
+
+}
+function zoomout(id)
+{
+var width = $(id).width();
+width = width*0.75;
+$(id).width(width);
+}
+</script>
+{/body}

@@ -1,0 +1,137 @@
+{>"layouts/admin_master" /}
+{<body}
+{#obj.items}
+<div id='info'><div class='sucess'></div><div class='error'></div></div>
+     <form class="form-horizontal" id='addproduct' method='POST' enctype="multipart/form-data">
+     <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+     <input type="hidden" id='_method' name="_method" value="CREATE">
+	<input type='hidden' name='postback' value='1' />
+	  <!-- Upload Image-->
+	<fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="uploadimage"/}</legend>
+    <div class="control-group">
+          
+          <!-- img-->
+          {?obj.items.imgs}
+          {#obj.items.imgs}
+	          <div class="controls imgRow col-xs-8 col-sm-6 col-md-3">
+	          	<img class='{@eq key=shape value="circle"} img-circle {/eq} img img-responsive' src='{@formatImg value="{url}" /}' id='img{id}'>
+	          	<!--shape circle?-->
+			        <div class="control-group">
+								<label class="control-label" for="category">{@pre type="content" key="shape"/}</label>
+								<div class="controls">
+			            <select class="input-xlarge required" name='shape' id='shape'>
+			              <option value='circle' {@eq key=shape value="circle"} selected {/eq}>{@pre type="content" key="circle"/}</option>
+				            <option value='same' {@eq key=shape value="same"} selected {/eq}>{@pre type="content" key="same"/}</option>
+			            </select>
+			           </div>
+			         </div>
+	          	<button type='button' id='removeImgBtn' onclick="javascript:return removeImg({id});" style='margin-top:5px;' class=" pull-right btn btn-danger btn-mini"><i class="icon-white icon-remove"></i> {@pre type="content" key="remove"/}</button>
+	          </div>
+          {/obj.items.imgs}
+          {:else}
+          <div class="controls imgRow imgRow-control ">
+            <input type="file", name="thumbnail1"  class="input-xlarge"  id='thumbnail1'>
+          </div>
+          {/obj.items.imgs}
+          <div class='clear'></div>
+		  		<div class="controls hidden imgRow" id="imgTemplate">
+            <input type="file",  class="input-xlarge"  id='thumbnail'>
+          </div>
+          <div class="controls imgRow imgRow-control hidden">
+            <input type="file", name="thumbnail1"  class="input-xlarge"  id='thumbnail1'>
+          </div>
+ 					
+ 					<!-- Button -->
+          <div class="controls hidden">
+            <button type='button' id='addImg' onclick="javascript:addImage();"  class="btn btn-success">
+            	<i class="icon-white icon-plus-sign"></i> {@pre type="content" key="addImg"/}
+            </button>
+          </div>
+          
+    </div>
+ 
+	</div>
+    </fieldset>
+	  <!-- Prod Info-->
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="addentity"/}</legend>
+    <div class="control-group">
+          <!-- Text input-->
+          <label class="control-label" for="username">{@pre type="content" key="entityname"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='entityname' id='entityname' value='{name}'>
+          </div>
+          <!-- category-->
+		<label class="control-label" for="category">{@pre type="content" key="category"/}</label>
+          <div class="controls hidden">
+            <input type="text"  class="input-xlarge" name='parent-category' id='category' value='餐饮' disabled>
+          </div>
+		<div class="controls">
+            <select class="input-xlarge" name='category' id='category'>
+            {#obj.category param=obj.items.category_id}
+              <option value={id}  {@eq key=id value=param} selected{/eq}>{name}</option>
+              	{#sub}
+	              	<option value={id}  {@eq key=id value=param} selected{/eq}>> {name}</option>
+	              {/sub}
+              {/obj.category}
+            </select>
+           </div>
+          <!-- desc-->
+          <label class="control-label" for="phone">{@pre type="content" key="description"/}</label>
+          <div class="controls">
+            <textarea {@lengthControl value=50/}  class="input-xlarge" name='description' id='description'>{obj.items.description}</textarea>
+          </div>
+           <!-- address-->
+		<h4>{@pre type="content" key="address"/}</h4>
+		<label class="control-label" for="floor">{@pre type="content" key="floor"/}</label>
+          <div class="controls">
+           <select  class="input-xlarge required" name='floor' id='floor' >
+          {#obj.floors param2=obj.items.floor}
+		          <option value={value}>{value}</option> 
+		   {/obj.floors}
+			</select>
+          </div>
+          <label class="control-label" for="number">{@pre type="content" key="number" /}</label>
+          <div class="controls">
+           <input type="text"  class="input-xlarge required" name='number' id='number' value={obj.items.number}> 
+          </div>
+    </div>
+       <!-- phone-->
+				<div class="control-group">
+					<label class="control-label" for="phone">{@pre type="content" key="phone"/}</label>
+			          <div class="controls">
+			           <input value="{obj.items.phone}" type="text"  {@lengthControl value=12/} class="input-xlarge " name='phone' id='phone'>       
+			          </div>
+    			</div>  
+    <div class="control-group">
+          <!-- Button -->
+          <div class="controls">
+            <button id='submit' class="btn btn-success"><i class="icon-white icon-hand-right"></i> {@pre type="content" key="submit"/}</button>
+          </div>
+        </div>
+	</div>
+    </fieldset>
+  </form>
+ {/obj.items}
+        <script>
+       function addImage()
+        {
+          var index  = $('div.imgRow').length;
+          $("#imgTemplate").clone().removeClass('hidden').insertAfter("div.imgRow:last");
+          $("div.imgRow:last").find('input').attr('name','thumbnail' +　index).attr('id','thumbnail' +　index );
+        }
+        function removeImg(id)
+        {
+          $('#img' + id).hide();
+          $('#removeImgBtn').hide();
+          $('.imgRow-control').removeClass('hidden');
+        }
+        $(document).ready(function(){
+        $('#floor').val('{obj.items.floor}');
+        $('#number').val('{obj.items.number}');
+        });
+        </script>
+{/body}

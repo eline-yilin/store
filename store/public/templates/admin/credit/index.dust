@@ -1,0 +1,80 @@
+{>"layouts/admin_master" /}
+{<body}
+     <div class="products">
+            
+                <fieldset>
+                    <legend>{@pre type="content" key="creditlist"/}</legend>
+ 												<form method="POST">
+                        {?items}
+                        {#items}
+                                    <div class="panel panel-primary my-list-item" id="appointment{id}">
+																			  <div class="panel-heading"><h3 style='display:inline-block;margin:0px;'>{amount}</h3> 
+																			  <span class='pull-right' style='padding-top:5px;' >{@pre type="content" key="expiration"/} {@formatDate value="{expiration}"/}</span>
+																			  </div>
+																			  <div class="panel-body hidden">
+																			 
+	  																				    <div style='margin-top:10px;padding-bottom:30px;position:relative'> 		
+																			    		<div class='col-xs-6 col-sm-6 col-md-6'>
+																				    		{#url  }
+																									  <img class='{@eq key=shape value="circle"}img-circle {/eq} my-shadow my-logo' style='margin-bottom:10px;' src='{value}'>
+																							 {/url}
+																			    		</div>
+																			    		<div class='col-xs-6 col-sm-6 col-md-6'>
+																			    			<div> <label class='label label-primary'> {category} </label></div>
+																			    			{?phone}
+
+																			    			<div style='margin-top:15px;'> <label class='label label-info'> <i class="icon-white icon-envelope"></i> {phone}</label>  </div>
+																			    			{/phone}
+
+																			    			
+																					    </div>	
+																			    		</div>
+																			    		
+																				    	<div class='clear'> 
+																			    		
+																			    	</div>
+																			    	{?description}
+																			    	<div style='margin:10px 0px;' class="alert alert-warning" role="alert">
+																			    	<h4>{@pre type="content" key="entityDesc"/}</h4>
+																			    			{description}				    	
+																			    	</div>
+																			    	{/description}
+																			    	<div class='pull-right' style='margin-top:10px;'>
+																					    		{?userObj.username}
+															                                    <button type='button' onclick="javascript:return comment({id},event);" class="btn btn-success btn-mini"><i class="icon-white icon-heart"></i> {@pre type="content" key="comment"/}</button>
+															                                    {:else}
+															                                    <button type='button'  class="btn btn-default btn-mini link my-tool-tip" data-original-title="{@pre type="content" key="needRegister"/}"><i class="icon-black icon-heart"></i> {@pre type="content" key="comment"/}</button>
+														                                     {/userObj.username} 
+														                                    </div>	
+																			    	<button style='display:none' onclick="javascript:return addCart({id});" class="btn btn-success btn-mini"><i class="icon-white icon-heart"></i> remove</button>
+				                                    
+																			  </div>
+																			</div>
+                        {/items}
+                        {:else}
+               
+            						{/items}
+            						
+                  <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+                  <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+                  <input type="hidden" name="_method" value="POST">
+                   </form>
+                </fieldset>
+            
+        </div>
+        
+<script>  
+$.ajaxSetup({
+    crossDomain: false, 
+    beforeSend: function(xhr, settings) {
+           
+    }
+});
+
+var csrftoken = $('#csrf').val();
+$(document).ready(function(){
+$
+});
+
+</script>
+{/body}

@@ -1,0 +1,89 @@
+{>"layouts/admin_master" /}
+{<body}
+<h1 style='display:none;'>{@pre type="content" key="greeting"/}</h1>
+<div class="products">
+    {?products}
+	<fieldset>
+	    <legend>Product List</legend>
+		{#products}
+		<div class="col-xs-12 col-sm-12 col-md-6">
+		    <div id="appointment{id}" class="product-item">
+			<form method="POST" action="/cart">
+			    <input type="hidden" name="item_id" value="{id}">
+					<div class="new-tile primary-tile">
+						<span class="item-title">{name}</span><span class="item-sub">{price}</span>
+					</div>
+					<div class="new-tile">
+						<label class='control-label'> {@pre type="content" key="productDesc"/}: </label>
+						{description}
+					</div>
+					<div class="new-tile">
+						<label class='control-label'> {@pre type="content" key="productImg"/}: </label>
+						<div class='images'>
+						{#url}
+						 <div class="col-xs-12 col-sm-6 col-md-4">
+						  <img style='max-width:100%;margin-bottom:10px;' src='{.}'>
+						 </div>
+						 {/url}
+						 </div>
+						 <div class='clear'></div>
+					</div>
+					<div style='margin-top:10px'></div>
+					  <button type='button' onclick="javascript:return edit({id});" class="btn btn-success btn-mini"><i class="icon-white icon-pencil"></i> {@pre type="content" key="edit"/}</button>  
+					  <button onclick="javascript:return goToDetail({id});" class="btn btn-success btn-mini"><i class="icon-white icon-search"></i> {@pre type="content" key="detail"/}</button>
+					  <button onclick="javascript:return removeItem({id});"  class="btn btn-danger btn-mini"><i class="icon-white icon-remove-sign"></i> {@pre type="content" key="remove"/}</button>
+			   
+			    <input type="submit" value="Delete" style='display:none'>
+			    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+			    <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+			    <input type="hidden" name="_method" value="POST">
+			</form>
+		    </div>
+		</div>
+		{/products}
+	</fieldset>
+    {:else}
+	There are no products :(
+    {/products}
+</div>
+<script>  
+$.ajaxSetup({
+crossDomain: false, 
+beforeSend: function(xhr, settings) {
+   
+}
+});
+
+var csrftoken = $('#csrf').val();
+function edit(id)
+{
+window.location = '/admin/product/edit/' + id;
+return false;
+}
+function removeItem(id)
+{
+var confirmed =  confirm("{@pre type="content" key="removeWarning"/}");
+if(confirmed)
+{
+$.post( "/admin/product/delete/" + id, {_csrf:csrftoken}, function( data ) {
+if(data.warningCount == 0)
+{
+$('#appointment' + id).remove();
+}
+				  return false;
+				},"json");
+  return false;
+}
+else
+{
+return false;
+}
+ 
+}
+function goToDetail(id)
+{
+ window.location = "/product/id/" + id;
+ return false;
+}
+</script>
+{/body}

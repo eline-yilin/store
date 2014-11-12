@@ -1,0 +1,198 @@
+{>"layouts/master" /}
+{<body}
+<div class='container-fluid'>
+<form method="POST">
+ 	<div class='fieldset'>
+       <legend>{@pre type="content" key="entitydetail"/}</legend>
+			<ul class="nav nav-tabs" role="tablist" id='entity-tab-control'>
+			  <li  class="active"><a href="#tab-detail">{@pre type="content" key="entitydetail"/}</a></li>
+			  <li><a href="#tab-comment">{@pre type="content" key="entitycomment"/}</a></li>
+			  <li><a href="#tab-address">{@pre type="content" key="entityaddress"/}</a></li>
+			</ul>
+			<!-- Tab panes -->
+			<div class="tab-content row-fluid ">
+				<div id='tab-detail' class='tab-pane active'>
+            			{?items}
+                        {#items}
+                        <div class="panel panel-primary my-list-detail" id="appointment{id}">
+							<div class="panel-heading">{name} 
+								<span class='pull-right'>{@pre type="content" key="entityaddress"/}  {floor}-{number}</span>
+							 </div>
+							 <div class="panel-body">
+								
+								<label class='label label-primary'> {category} </label>
+								{?phone}
+
+									<div style='margin-top:15px;'><div class='my-icon-phone'></div> <label class='label label-info'> {phone}</label>  </div>
+								{/phone}
+								<div style='margin:10px 0px;' class="alert alert-warning" role="alert">{description}</div>
+								<div style='margin:10px 0px;'>
+											{#imgs}
+												<img class='{@eq key=shape value="circle"}img-circle {/eq}  my-shadow' style='max-width:40%;margin-bottom:10px;' src='{url}'>
+											{/imgs}
+								</div>	
+								{#products}
+									 <div class="panel panel-primary ">
+										  <div class="panel-heading">{name} <span class='pull-right'>￥{price}</span></div>
+										  <div class="panel-body">
+										  	<div class="alert alert-info" role="alert">
+													 {description}
+												</div>
+										    <div class="new-tile">	
+														<div class='images'>
+															{#url}
+																<div class="col-xs-12 col-sm-6 col-md-4">
+																	 <img class='img img-rounded img-responsive' style='margin-bottom:10px;' src='{.}'>
+																 </div>
+															{/url}
+															</div>
+														<div class='clear'></div>
+												</div>
+																			
+										  </div>
+									</div>
+								{/products}
+								<!--products-->	
+								<!--close products-->
+						   </div><!--close panel body-->
+						</div><!--close panel-->									
+                        {/items}    
+			            {:else}
+			                There are no products :(
+			            {/items}
+          </div><!--close tab detail-->
+		   <div id='tab-comment' class='tab-pane'>
+			 {#items}
+			 {#comments}
+				 <div class="panel panel-primary">
+					  <div class="panel-heading">{title}</div>
+					  <div class="panel-body">
+					    {content}
+					  </div>
+				</div>
+			 {/comments}
+			 {/items}
+			 {?userObj.username}
+                        <button type='button' onclick="javascript:return comment({items.id},event);" class="btn btn-success btn-mini"><i class="icon-white icon-heart"></i> {@pre type="content" key="comment"/}</button>
+                        {:else}
+                        <button type='button'  class="btn btn-default btn-mini link my-tool-tip" data-original-title="{@pre type="content" key="needRegister"/}"><i class="icon-black icon-heart"></i> {@pre type="content" key="comment"/}</button>
+			{/userObj.username}
+			 <div id='commentDialog'  class="modal fade" tabindex="-1" role="dialog" >
+
+       			  <div class="modal-header">
+          			 <button type="button" class="close" data-dismiss="modal" style='padding:3px;'>×</button>
+           		 </div>
+           		 <div class="modal-body">  
+       			 <div>
+				        <legend class="">{@pre type="content" key="comment"/}</legend>
+				    <div class="control-group">
+				        <!-- title
+						<label class="control-label pull-left" for="title">{@pre type="content" key="title"/}</label>
+				          <div class="controls pull-right">
+				            <input type="text"  class="input-xlarge" name='title' id='title'>
+				          </div>
+							<div class='clear'></div>-->		
+				           <!-- content-->
+						<label class="control-label  pull-left" for="content">{@pre type="content" key="content"/}</label>
+				          <div class="controls pull-right">
+				            <textarea  class="input-xlarge" name='content' id='content'></textarea>
+				          </div>
+				          
+				    </div>
+					<div id='commentMsg' style='display:none'></div>
+					
+    			</fieldset>
+    			</div>
+    			 <div class="modal-footer">  
+				          <!-- Button -->
+				          <div class="controls">
+				            <button type='button' id='submitComment' onclick="javascript: addComment();" class="btn btn-success"><i class="icon-white icon-hand-right"></i> {@pre type="content" key="submit"/}</button>
+				          </div>
+
+				</div>
+   
+        </div>
+		  </div><!--close tab comment-->
+		  <div id='tab-address' class='tab-pane'>
+		  	<a href='/image/jpg/floor_{items.floor}_{items.number}'>
+		  	<div style='text-align:center;'>
+		  	<img class='img-responsive' style='max-width:90%;margin-bottom:10px;' src='/img/upload/floor_{items.floor}.jpg'>
+		  	</div>
+		  	<div style='text-align:center;'><i class='icon icon-plus-sign'></i> {@pre type="content" key="viewfull"/}</div>
+		  	</a>
+		  </div><!--close tab address-->
+ 		</div><!--close tab-content-->
+  </div>
+  <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+<input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+<input type="hidden" name="_method" value="POST">
+ </form>
+ </div>
+        <script>  
+        $(document).ready(
+        function(){
+	         $('#entity-tab-control a').click(function (e) {
+						  e.preventDefault();
+						  $(this).tab('show');
+						});
+        });
+$.ajaxSetup({
+    crossDomain: false, 
+    beforeSend: function(xhr, settings) {
+           
+    }
+});
+
+var csrftoken = $('#csrf').val();
+        function addCart(id)
+        {
+         $.post( "/cart", {_csrf:csrftoken}, function( data ) {
+					  return false;
+					},"json");
+          return false;
+        }
+        function comment(id,event)
+{
+stopEvent(event);
+$('#commentDialog').modal();
+$('#commentDialog').data('entityid',id);
+return false;
+}
+ function addComment()
+        {
+         var id = $('#commentDialog').data('entityid');
+         var content = $('#content').val();
+         var title = '';
+         $.post( "/comment/add", 
+         {	_csrf:csrftoken, 
+         	content:content, 
+         	title:title,
+         	target_type:'entity',
+         	target_id:id
+          },
+         	 function( data ) {
+         	 if(data['insertId'] >= 0)
+         	 {
+         	 $('#content').val('');
+         	
+         	 $('#commentDialog .control-group').hide();
+         	  $('#commentMsg').html('<div class="alert alert-success" role="alert">{@pre type="content" key="commentSucess"/}</div>').show();
+         	  
+         	  window.setTimeout(
+         	  function(){
+         	  	$('#commentDialog').modal('hide');
+         	  	$('#commentMsg').hide();
+         	  	$('#commentDialog .control-group').show();
+         	  	},3000);
+         	 }
+         	 else
+         	 {
+         	 $('#commentMsg').html('<div class="alert alert-danger" role="alert">{@pre type="content" key="commentError"/}</div>').show();
+         	 window.setTimeout(function(){$('#commentDialog').modal('hide');$('#commentMsg').hide();},3000);
+         	 }
+					  return false ;
+					},"json");
+          return false;
+        }
+        </script>
+{/body}

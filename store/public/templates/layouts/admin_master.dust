@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{@pre type="content" key="title"/}:{name}</title>
+    <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/app.css"/>
+     <script src="/js/jquery.js"></script> 
+      <script src="/js/app.js"></script> 
+     <!-- Latest compiled and minified JavaScript -->
+      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</head>
+<body role="document">
+    <!-- Fixed navbar -->
+    <div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+        <a class="navbar-brand pull-left" href="/">{@pre type="content" key="title"/}</a>
+          <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+	          {?userObj.username}
+	           	<span style='color:#999;position:fixed;right:60px;top:15px;'>{userObj.username}</span>
+	          {/userObj.username} 
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li style='display:none' {@eq key=name value="index"}class="active"{/eq}><a href="/admin">{@pre type="content" key="home"/}</a></li>
+            <li {@eq key=name value="user"}class="active"{/eq}>
+             <a data-toggle="dropdown" class="dropdown-toggle hidden" href="/admin/users">{@pre type="content" key="user"/} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/user">{@pre type="content" key="user"/}</a> </li>
+                <li><a href="/user/order">{@pre type="content" key="order"/}</a> </li>
+              </ul>
+            </li>
+            <li {@eq key=name value="user"}class="active"{/eq}><a href="/admin/user">{@pre type="content" key="user"/}</a></li>
+            <li {@eq key=name value="credit"}class="active"{/eq}>
+             <a data-toggle="dropdown" class="dropdown-toggle" href="/admin/credit">{@pre type="content" key="credit"/} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                 <li><a href="/admin/credit">{@pre type="content" key="credit"/}</a> </li>
+                 <li><a href="/admin/credit/add">{@pre type="content" key="addcredit"/}</a> </li>
+              </ul>
+            </li>
+            <li class="dropdown {@eq key=name value="product"} active{/eq}">
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#">{@pre type="content" key="product"/} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                 <li><a href="/admin/product">{@pre type="content" key="productlist"/}</a></li>
+                 <li><a href="/admin/product/add">{@pre type="content" key="productadd"/}</a></li>
+              </ul>
+            </li>
+            <li class="dropdown {@eq key=name value="entity"} active{/eq}">
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#">{@pre type="content" key="entity"/} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                 <li><a href="/admin/entity">{@pre type="content" key="entitylist"/}</a></li>
+                 <li><a href="/admin/entity/add">{@pre type="content" key="entityadd"/}</a></li>
+              </ul>
+            </li>
+            <li {@eq key=name value="comment"}class="active"{/eq}><a href="/admin/comment">{@pre type="content" key="comment"/}</a></li>  
+           <li class="dropdown {@eq key=name value="news"} active{/eq}">
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#">{@pre type="content" key="news"/} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                 <li><a href="/admin/news">{@pre type="content" key="newslist"/}</a></li>
+                 <li><a href="/admin/news/add">{@pre type="content" key="newsadd"/}</a></li>
+                 <li><a href="/admin/activity/comment/">{@pre type="content" key="commentreward"/}</a></li>
+              </ul>
+            </li>
+            <li {@eq key=name value="cart"}class="active"{/eq}><a href="/admin/orders">{@pre type="content" key="orders"/}</a></li>
+            <li class="dropdown">
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#">{@pre type="content" key="language"/} <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                 <li><a href="/setLanguage/en-US"><img src="/img/locale/us.png" alt="English"></a></li>
+                 <li><a href="/setLanguage/es-ES"><img src="/img/locale/es.png" alt="Espaniola"></a></li>
+                 <li><a href="/setLanguage/zh-CN"><img src="/img/locale/cn.png" alt="中文"></a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div role="main" class="container theme-showcase">
+				{+body /}
+    </div> <!-- /container -->
+	<script>
+		$(document).ready(function()
+		{
+	         $('input.required,select.required,textarea.required').after('<span class="alert alert-warning" role="alert" style="padding:3px;margin-left:5px;"> {@pre type="content" key="required"/} </span>');
+		});
+		</script>
+</body>
+</html>

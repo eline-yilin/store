@@ -1,0 +1,115 @@
+{>"layouts/admin_master" /}
+{<body}
+<div id='info'><div class='sucess'></div><div class='error'></div></div>
+     <form class="form-horizontal" id='addproduct' method='POST' enctype="multipart/form-data">
+     <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+     <input type="hidden" id='_method' name="_method" value="CREATE">
+	<input type='hidden' name='postback' value='1' />
+	  <!-- Upload Image-->
+	<fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="uploadimage"/}</legend>
+    <div class="control-group">
+          
+          <!-- img-->
+		  <div class="controls hidden imgRow" id="imgTemplate">
+            <input type="file",  class="input-xlarge"  id='thumbnail'>
+          </div>
+          <div class="controls imgRow">
+            <input type="file", name="thumbnail1"  class="input-xlarge"  id='thumbnail1'>
+          </div>
+ 					 <!--shape circle?-->
+        <div class="control-group">
+					<label class="control-label" for="category">{@pre type="content" key="shape"/}</label>
+					<div class="controls">
+            <select class="input-xlarge required" name='shape' id='shape'>
+              <option value='circle'>{@pre type="content" key="circle"/}</option>
+	            <option value='same'>{@pre type="content" key="same"/}</option>
+            </select>
+           </div>
+         </div>
+ 					<!-- Button -->
+          <div class="controls">
+            <button type='button' id='addImg' onclick="javascript:addImage();"  class="btn btn-success hidden">
+            	<i class="icon-white icon-plus-sign"></i> {@pre type="content" key="addImg"/}
+            </button>
+          </div>
+          
+    </div>
+ 
+	</div>
+    </fieldset>
+	  <!-- Prod Info-->
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="addentity"/}</legend>
+    		<!-- entityname-->
+    		<div class="control-group">
+          <label class="control-label" for="username">{@pre type="content" key="entityname"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge required" name='entityname' id='entityname'>
+          </div>
+        </div>
+        <!-- category-->
+        <div class="control-group">
+					<label class="control-label" for="category">{@pre type="content" key="category"/}</label>
+          <div class="controls hidden">
+            <input type="text"  class="input-xlarge" name='parent-category' id='category' value='餐饮' disabled>
+          </div>  
+					<div class="controls">
+            <select class="input-xlarge required" name='category' id='category'>
+            {#category}
+              <option value={id}>{name}</option>
+	              {#sub}
+	              	<option value={id}>> {name}</option>
+	              {/sub}
+              {/category}
+            </select>
+           </div>
+         </div>
+         <!-- desc-->
+         <div class="control-group">
+          <label class="control-label" for="phone">{@pre type="content" key="description"/}</label>
+          <div class="controls">
+            <textarea  class="input-xlarge" name='description' id='description' {@lengthControl value=50/}></textarea>
+          </div>
+         </div>
+         <!-- address-->
+				<h4>{@pre type="content" key="address"/}</h4>
+				<div class="control-group">
+					<label class="control-label" for="floor">{@pre type="content" key="floor"/}</label>
+			          <div class="controls">
+				            <select  class="input-xlarge required" name='floor' id='floor'>
+					          {#floors}
+					          <option value={.}>{.}</option> 
+					          {/floors} 
+					         </select> 
+			          </div>
+			          <label class="control-label" for="number">{@pre type="content" key="number"/}</label>
+			          <div class="controls">
+			            <input type="text"class="input-xlarge required" name='number' id='number'>       
+			          </div>
+    			</div>
+    	 <!-- phone-->
+				<div class="control-group">
+					<label class="control-label" for="floor">{@pre type="content" key="phone"/}</label>
+			          <div class="controls">
+			            <input type="text"  {@lengthControl value=12/} class="input-xlarge " name='phone' id='phone'>       
+			          </div>
+    			</div>
+          <!-- Button -->
+          <div class="controls">
+            <button id='submit' onclick='javascript:return validate();' class="btn btn-success"><i class="icon-white icon-hand-right"></i> {@pre type="content" key="submit"/}</button>
+          </div>
+	</div>
+    </fieldset>
+  </form>
+        <script>  
+       function addImage()
+        {
+          var index  = $('div.imgRow').length;
+          $("#imgTemplate").clone().removeClass('hidden').insertAfter("div.imgRow:last");
+          $("div.imgRow:last").find('input').attr('name','thumbnail' +　index).attr('id','thumbnail' +　index );
+        }
+        </script>
+{/body}

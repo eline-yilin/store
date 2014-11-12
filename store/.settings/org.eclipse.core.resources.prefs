@@ -1,0 +1,26 @@
+#Mon Sep 08 10:11:16 CST 2014
+eclipse.preferences.version=1
+encoding//locales/CN/zh/admin/activity/comment.properties=UTF-8
+encoding//locales/CN/zh/admin/comment/index.properties=UTF-8
+encoding//locales/CN/zh/admin/credit/index.properties=UTF-8
+encoding//locales/CN/zh/admin/entity/add.properties=UTF-8
+encoding//locales/CN/zh/admin/entity/index.properties=UTF-8
+encoding//locales/CN/zh/admin/entity/update.properties=UTF-8
+encoding//locales/CN/zh/admin/index.properties=UTF-8
+encoding//locales/CN/zh/admin/news/add.properties=UTF-8
+encoding//locales/CN/zh/admin/news/index.properties=UTF-8
+encoding//locales/CN/zh/admin/product/add.properties=UTF-8
+encoding//locales/CN/zh/admin/product/index.properties=UTF-8
+encoding//locales/CN/zh/admin/user/index.properties=UTF-8
+encoding//locales/CN/zh/comment/add.properties=UTF-8
+encoding//locales/CN/zh/comment/index.properties=UTF-8
+encoding//locales/CN/zh/entity/id.properties=UTF-8
+encoding//locales/CN/zh/entity/index.properties=UTF-8
+encoding//locales/CN/zh/image/map.properties=UTF-8
+encoding//locales/CN/zh/index.properties=UTF-8
+encoding//locales/CN/zh/layouts/admin_master.properties=UTF-8
+encoding//locales/CN/zh/layouts/master.properties=UTF-8
+encoding//locales/CN/zh/product/index.properties=UTF-8
+encoding//locales/CN/zh/user/index.properties=UTF-8
+encoding//locales/CN/zh/user/login.properties=UTF-8
+encoding//locales/CN/zh/user/register.properties=UTF-8

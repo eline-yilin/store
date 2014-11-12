@@ -1,0 +1,38 @@
+{>"layouts/master" /}
+{<body}
+<div id='info'><div class='sucess'></div><div class='error'></div></div>
+     <form class="form-horizontal" id='register' method='POST'>
+     <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+     <input type="hidden" id='_method' name="_method" value="CREATE">
+	<input type='hidden' name='postback' value='1' />
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="addcomment"/}</legend>
+    <div class="control-group">
+          <!-- Text input-->
+          
+          <!-- title-->
+					<label class="control-label" for="title">{@pre type="content" key="title"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='title' id='title'>
+          </div>
+					
+           <!-- content-->
+					<label class="control-label" for="content">{@pre type="content" key="content"/}</label>
+          <div class="controls">
+            <textarea  class="input-xlarge" name='content' id='content'></textarea>
+          </div>
+          
+    </div>
+        
+    <div class="control-group">
+          <!-- Button -->
+          <div class="controls">
+            <button id='submit'  class="btn btn-success"><i class="icon-white icon-hand-right"></i> {@pre type="content" key="submit"/}</button>
+          </div>
+        </div>
+	</div>
+    </fieldset>
+  </form>
+       
+{/body}

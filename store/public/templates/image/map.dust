@@ -1,0 +1,33 @@
+{>"layouts/master" /}
+
+{<body}
+
+<fieldset>
+<legend>{@pre type="content" key="floormap"/}</legend>
+					<form method="POST">
+   									{#floors}
+   																	<div class="col col-xs-12 col-sm-4 col-md-3">
+                                    <div class="panel panel-primary" id="appointment{id}">
+																			  <div class="panel-heading">{.} {@pre type="content" key="floor"/}
+																			  </div>
+																			  <div class="panel-body">
+																			      <a href='/image/jpg/floor_{.}'>
+																			      <div style='text-align:center;'>
+																			      <img style='width:200px;cursor:pointer;' class='img-responsive img img-thumbnail'  src='/img/upload/floor_{.}.jpg'>
+																			      </div>
+																			      <div style='text-align:center;'><i class='icon icon-plus-sign'></i> {@pre type="content" key="viewfull"/}</div>
+		  
+																			      </a>				    	
+																			  </div>
+																			</div>
+																			</div>
+                        {/floors}
+                    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+                    <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+                    <input type="hidden" name="_method" value="POST">
+                     </form>
+</fieldset>
+<script>
+
+</script>
+{/body}

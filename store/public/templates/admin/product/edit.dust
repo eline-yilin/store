@@ -1,0 +1,75 @@
+{>"layouts/admin_master" /}
+{<body}
+<div id='info'><div class='sucess'></div><div class='error'></div></div>
+     <form class="form-horizontal" id='addproduct' method='POST' enctype="multipart/form-data">
+     <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+     <input type="hidden" id='_method' name="_method" value="CREATE">
+	<input type='hidden' name='postback' value='1' />
+	  <!-- Upload Image-->
+	<fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="uploadimage"/}</legend>
+    <div class="control-group">
+          
+          <!-- img-->
+					<div class="controls hidden imgRow" id="imgTemplate">
+            <input type="file",  class="input-xlarge"  id='thumbnail'>
+          </div>
+          <div class="controls imgRow">
+            <input type="file", name="thumbnail1"  class="input-xlarge"  id='thumbnail1'>
+          </div>
+ 					
+ 					<!-- Button -->
+          <div class="controls">
+            <button type='button' id='addImg' onclick="javascript:addImage();"  class="btn btn-success">{@pre type="content" key="addImg"/}</button>
+          </div>
+          
+    </div>
+ 
+	</div>
+    </fieldset>
+	  <!-- Prod Info-->
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="addproduct"/}</legend>
+    <div class="control-group">
+          <!-- Text input-->
+          <label class="control-label" for="username">{@pre type="content" key="productname"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='productname' id='productname'>
+          </div>
+          <!-- category-->
+					<label class="control-label" for="phone">{@pre type="content" key="category"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='category' id='category'>
+          </div>
+           <!-- price-->
+		  <label class="control-label" for="price">{@pre type="content" key="price"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='price' id='price'>
+          </div>
+          <!-- desc-->
+          <label class="control-label" for="phone">{@pre type="content" key="description"/}</label>
+          <div class="controls">
+            <textarea  class="input-xlarge" name='description' id='description'></textarea>
+          </div>
+    </div>
+        
+    <div class="control-group">
+          <!-- Button -->
+          <div class="controls">
+            <button id='submit' class="btn btn-success">{@pre type="content" key="submit"/}</button>
+          </div>
+        </div>
+	</div>
+    </fieldset>
+  </form>
+        <script>  
+       function addImage()
+        {
+          var index  = $('div.imgRow').length;
+          $("#imgTemplate").clone().removeClass('hidden').insertAfter("div.imgRow:last");
+          $("div.imgRow:last").find('input').attr('name','thumbnail' +　index).attr('id','thumbnail' +　index );
+        }
+        </script>
+{/body}

@@ -1,0 +1,113 @@
+{>"layouts/admin_master" /}
+<link rel="stylesheet" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-ui.js"></script> 
+<script>
+$(document).ready(function(){
+$( ".datepicker" ).datepicker();
+});
+</script>
+{<body}
+<div id='info'><div class='sucess'></div><div class='error'></div></div>
+     <form class="form-horizontal" id='addproduct' method='POST' enctype="multipart/form-data">
+     <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+     <input type="hidden" id='_method' name="_method" value="CREATE">
+	<input type='hidden' name='postback' value='1' />
+	  <!-- Upload Image-->
+	<fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="uploadimage"/}</legend>
+    <div class="control-group  {?sizewarning} error {/sizewarning}">
+          
+          <!-- img-->
+					<div class="controls hidden imgRow" id="imgTemplate">
+            <input type="file",  class="input-xlarge"  id='thumbnail'>
+          </div>
+          <div class="controls imgRow">
+            <input type="file", name="thumbnail1"  class="input-xlarge"  id='thumbnail1'>
+             <label class="control-label label-warning" for="thumbnail1" style='margin-top:5px;padding:3px;'>{@pre type="content" key="imgsizelimit"/}</label>
+          </div>
+					
+    </div>
+ 
+	</div>
+    </fieldset>
+	<!-- Prod Info-->
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="addnews"/}</legend>
+    <div class="control-group">
+    
+    	  <!-- type-->
+          <label class="control-label">{@pre type="content" key="type"/}</label>
+	          <div class="controls">
+	            <select class="input-xlarge" name='target_type' id='target_type'>
+	              <option selected value='entity'>{@pre type="content" key="entity"/}</option>
+	              <option value='system'>{@pre type="content" key="system"/}</option>
+	              
+	            </select>
+	          </div>
+	          
+          <!-- Text input-->
+          <label class="control-label" for="username">{@pre type="content" key="newstitle"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='title' id='title' value={item.title}>
+          </div>
+
+		  
+          <!-- desc-->
+          <label class="control-label" for="content">{@pre type="content" key="newscontent"/}</label>
+          <div class="controls">
+            <textarea  class="input-xlarge" name='content' id='content' >{item.content}</textarea>
+          </div>
+           <!-- url-->
+					<label class="control-label" for="weight">{@pre type="content" key="newsurl"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='url' id='url' value={item.url}>
+          </div>
+          <!-- weight-->
+		  <label class="control-label" for="weight">{@pre type="content" key="weight"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='weight' id='weight' value={item.weight}>
+          </div>
+           <!-- start date-->
+		  <label class="control-label" for="start_date">{@pre type="content" key="startdate"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge datepicker" name='start_date' id='start_date' value={item.weight}>
+          </div>
+          <!-- end date-->
+		  <label class="control-label" for="end_date">{@pre type="content" key="enddate"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge datepicker" name='end_date' id='end_date' value={item.weight}>
+          </div>
+          <!-- entity-->
+          <label class="control-label">{@pre type="content" key="entity"/}</label>
+	          <div class="controls">
+	            <select class="input-xlarge" name='target_id' id='target_id'>
+	              <option value=''></option>
+	              {#items.entity}
+	              <option value='{id}'>{name}</option>
+	              {/items.entity}
+	             
+	            </select>
+	          </div>
+    </div>
+        
+    </fieldset>
+    
+    <div class="control-group">
+          <!-- Button -->
+          <div class="controls">
+            <button id='submit' class="btn btn-success">{@pre type="content" key="submit"/}</button>
+          </div>
+        </div>
+	</div>
+  </form>
+        <script>  
+       function addImage()
+        {
+          var index  = $('div.imgRow').length;
+          $("#imgTemplate").clone().removeClass('hidden').insertAfter("div.imgRow:last");
+          $("div.imgRow:last").find('input').attr('name','thumbnail' +　index).attr('id','thumbnail' +　index );
+        }
+        </script>
+{/body}

@@ -1,0 +1,172 @@
+DROP TABLE IF EXISTS `yuechang`.`user`;
+CREATE TABLE  `yuechang`.`user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `openid` varchar(50) NOT NULL,
+  `gender` char(10) NOT NULL,
+  `birthday` date NOT NULL,
+  `clientid` int(10) unsigned NOT NULL DEFAULT 0,
+  `phone` varchar(15) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `yuechang`.`client`;
+CREATE TABLE  `yuechang`.`client` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `yuechang`.`credit_history`;
+CREATE TABLE  `yuechang`.`credit_history` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `typeid` int(10) unsigned  NOT NULL DEFAULT '0',
+  `expiration` datetime NOT NULL,
+  `amount` int(10) unsigned  NOT NULL,
+  `userid` int(10) unsigned  NOT NULL,
+  `client` int(10) unsigned  NOT NULL DEFAULT '0',
+  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `yuechang`.`product`;
+CREATE TABLE  `yuechang`.`product` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(45) NOT NULL,
+  `description` varchar(400) NOT NULL,
+  `img` varchar(45) NULL DEFAULT NULL,
+  `price` float unsigned NOT NULL,
+  `entity_id` INT(11) NULL DEFAULT NULL,
+  `weight` INT(11) NULL DEFAULT 0,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+  
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+
+DROP TABLE IF EXISTS `yuechang`.`admin`;
+CREATE TABLE  `yuechang`.`admin` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `clientid` int(10) unsigned NOT NULL DEFAULT '0',
+  `typeid` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ ENGINE=InnoDB 
+ 
+ 
+ 
+DROP TABLE IF EXISTS `yuechang`.`product_img`;
+CREATE TABLE  `yuechang`.`product_img` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(10) unsigned NOT NULL,
+  `url` varchar(450) NOT NULL,
+  PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ ENGINE=InnoDB
+ 
+ 
+DROP TABLE IF EXISTS `yuechang`.`product_category`;
+CREATE TABLE  `yuechang`.`product_category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned ,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) 
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB 
+
+DROP TABLE IF EXISTS `yuechang`.`entity_category`;
+CREATE TABLE  `yuechang`.`entity_category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned ,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) 
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+
+DROP TABLE IF EXISTS `yuechang`.`entity`;
+CREATE TABLE  `yuechang`.`entity` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(450) NOT NULL,
+  `category_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `phone` varchar(20) unsigned NOT NULL DEFAULT '',
+  `address_id` int(10) unsigned NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) 
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+
+DROP TABLE IF EXISTS `yuechang`.`address`;
+CREATE TABLE `address` (
+	`id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+	`city` VARCHAR(50) NULL DEFAULT NULL,
+	`state` VARCHAR(50) NULL DEFAULT NULL,
+	`floor` VARCHAR(50) NULL DEFAULT NULL,
+	`number` VARCHAR(50) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS `yuechang`.`entity_img`;
+CREATE TABLE `entity_img` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`entity_id` INT(10) UNSIGNED NOT NULL,
+	`url` VARCHAR(450) NOT NULL,
+	`shape` varchar(45) NOT NULL DEFAULT 'same',
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+
+DROP TABLE IF EXISTS `yuechang`.`comment`;
+CREATE TABLE  `yuechang`.`comment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(85) NOT NULL,
+  `content` varchar(450) NOT NULL,
+  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `target_type` varchar(45) NOT NULL DEFAULT 'system',
+  `target_id` int(10) NOT NULL  DEFAULT '0',
+  `user_id` int(10) unsigned NOT NULL,
+  `status_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) 
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+
+DROP TABLE IF EXISTS `yuechang`.`news`;
+CREATE TABLE  `yuechang`.`news` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `status_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(85) NOT NULL,
+  `content` varchar(500) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `target_type` varchar(45) NOT NULL DEFAULT 'system',
+  `img` varchar(145) NOT NULL,
+  `url` varchar(200) NULL DEFAULT NULL,
+  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `weight` int(10) unsigned NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) 
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+ALTER TABLE `news`
+	ADD COLUMN `target_id` INT(10) UNSIGNED NULL AFTER `is_deleted`,
+	ADD COLUMN `start_date` DATE NULL AFTER `target_id`;
+ALTER TABLE `news`
+	ADD COLUMN `end_date` DATE NULL DEFAULT NULL AFTER `start_date`;

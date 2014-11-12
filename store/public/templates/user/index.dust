@@ -1,0 +1,52 @@
+{>"layouts/master" /}
+{<body}
+     <div class="products">
+            {?user}
+                <fieldset>
+                    <legend>{@pre type="content" key="userinfo"/}</legend>
+                        {#user}
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <div id="appointment{id}" class="product-item">
+                                <form method="POST" action="/cart">
+                                    <input type="hidden" name="item_id" value="{id}">
+																					<div class="new-tile primary-tile">
+																						<span class="item-title">{@pre type="content" key="username"/}</span><span class="item-sub">{name}</span>
+																					</div>
+																					<div class="new-tile primary-tile">
+																						<span class="item-title">{@pre type="content" key="phone"/}</span><span class="item-sub">{phone}</span>
+																					</div>
+																					<div class="new-tile primary-tile">
+																						<span class="item-title">{@pre type="content" key="DOB"/}</span><span class="item-sub">{@formatDate value="{birthday}"/}</span>
+																					</div>
+																		<div style='margin-top:10px'></div>
+																	
+                                    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+                                    <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+                                    <input type="hidden" name="_method" value="POST">
+                                </form>
+                            </div>
+                        </div>
+                        {/user}
+                </fieldset>
+            {:else}
+                There are no users :(
+            {/user}
+        </div>
+        <script>  
+$.ajaxSetup({
+    crossDomain: false, 
+    beforeSend: function(xhr, settings) {
+           
+    }
+});
+
+var csrftoken = $('#csrf').val();
+        function addCart(id, event)
+        {
+         $.post( "/cart", {_csrf:csrftoken}, function( data ) {
+					  return false;
+					},"json");
+          return false;
+        }
+        </script>
+{/body}

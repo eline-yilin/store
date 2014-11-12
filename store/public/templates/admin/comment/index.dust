@@ -1,0 +1,92 @@
+{>"layouts/admin_master" /}
+{<body}
+     <div class="products">
+      <form method="POST">
+            {?items}
+                <fieldset>
+                    <legend>{@pre type="content" key="commentlist"/}</legend>
+                        {#items}
+                        <h2>{@pre type="content" key="entitycomment"/}</h2>
+                        {#entity_comments}
+                        <div class="panel panel-{@eq key=status_id value=0}danger{:else}primary{/eq} my-list-item" id="entity{id}" >
+														  <div class="panel-heading">{title} 
+														  <span class='pull-right' > {@formatDate value="{updated}" /}</span>
+														  </div>
+														  <div class="panel-body">
+														 
+														      <div class='label label-info'>{name} 
+															      <span class='pull-right'>
+															      	{@eq key=status_id value=0}
+															      	<button type='button' onclick="javascript:return commentStatus({id},1,'entity');" class="btn btn-success btn-mini"><i class="icon-white icon-ok"></i> {@pre type="content" key="approve"/}</button>
+															      	{:else}
+															      	<button type='button' onclick="javascript:return commentStatus({id},0,'entity');" class="btn btn-danger btn-mini"><i class="icon-white icon-off"></i> {@pre type="content" key="reject"/}</button>
+															      	{/eq}
+															      </span>
+														      </div>
+														    	<div style='margin:25px 0px;' class="alert alert-warning" role="alert">{content}</div>
+                              </form>
+														  </div>
+														</div>
+                        {/entity_comments}
+                        <h2>{@pre type="content" key="othercomment"/}</h2>
+                        {#other_comments}
+                        <div class="panel panel-{@eq key=status_id value=0}danger{:else}primary{/eq} my-list-item" id="other{id}" >
+														  <div class="panel-heading">{title} 
+														  <span class='pull-right' > {@formatDate value="{updated}" /}</span>
+														  </div>
+														  <div class="panel-body">
+														 
+														      <div class='label label-info'>
+															      <span class='pull-right'>
+															      	{@eq key=status_id value=0}
+															      	<button type='button' onclick="javascript:return commentStatus({id},1,'other');" class="btn btn-success btn-mini"><i class="icon-white icon-ok"></i> {@pre type="content" key="approve"/}</button>
+															      	{:else}
+															      	<button type='button' onclick="javascript:return commentStatus({id},0,'other');" class="btn btn-danger btn-mini"><i class="icon-white icon-off"></i> {@pre type="content" key="reject"/}</button>
+															      	{/eq}
+															      </span>
+														      </div>
+														    	<div style='margin:25px 0px;' class="alert alert-warning" role="alert">{content}</div>
+                              </form>
+														  </div>
+														</div>
+                        {/other_comments}
+                        {/items}
+                </fieldset>
+            {:else}
+                There are no products :(
+            {/items}
+             <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+            <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+            <input type="hidden" name="_method" value="POST">
+        </form>
+        </div>
+        <script>  
+$.ajaxSetup({
+    crossDomain: false, 
+    beforeSend: function(xhr, settings) {
+           
+    }
+});
+
+var csrftoken = $('#csrf').val();
+        function commentStatus(id,status,target)
+        {
+         $.post( "/admin/comment/status", {_csrf:csrftoken, status:status,id:id}, function( data ) {
+         if(data.warningCount == 0)
+         { 
+         	$('#'  + target + id + ' button').attr('disabled','disabled');
+	         if(status == 1){
+	         	$('#'  + target + id).removeClass('panel-danger').addClass('panel-primary');
+	         }
+	         else if(status == 0){
+	         	$('#'  + target + id).removeClass('panel-primary').addClass('panel-danger');
+	         }
+         }
+
+					  return false;
+					},"json");
+          return false;
+        }
+        
+        </script>
+{/body}

@@ -1,0 +1,58 @@
+{>"layouts/master" /}
+{<body}
+<div id='info'><div class='sucess'></div><div class='error'></div></div>
+     <form class="form-horizontal" id='register' method='POST'>
+     <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+     <input type="hidden" id='_method' name="_method" value="CREATE">
+	<input type='hidden' name='postback' value='1' />
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="login"/}</legend>
+    <div class="control-group">
+          <!-- Text input-->
+          
+          <!-- phone-->
+					<label class="control-label" for="phone">{@pre type="content" key="phone"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='phone' id='phone' {?user.phone}value='{user.phone}'{/user.phone}>
+          </div>
+					
+           <!-- password-->
+					<label class="control-label" for="phone">{@pre type="content" key="password"/}</label>
+          <div class="controls">
+            <input type="password"  class="input-xlarge" name='password' id='password'>
+          </div>
+          
+    </div>
+        
+    <div class="control-group">
+          <!-- Button -->
+          <div class="controls">
+            <button id='submit' onclick="javascript:return login();"  class="btn btn-success">{@pre type="content" key="submit"/}</button>
+          </div>
+        </div>
+	</div>
+    </fieldset>
+  </form>
+        <script>  
+        function login()
+        {
+        var csrftoken = $('#csrf').val(); 
+        var phone = $('#phone').val();
+        var password =  $('#password').val();
+         $.post( "/user/login", {
+         _csrf:csrftoken,
+         phone:phone,
+       	 password:password
+         },
+          function( data ) {
+          if(data['id'])
+          {
+           window.location = "/";
+          }
+					  return false;
+					},"json");
+          return false;
+        }
+        </script>
+{/body}

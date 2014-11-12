@@ -1,0 +1,38 @@
+{>"layouts/admin_master" /}
+{<body}
+     <div class="products">
+            
+                <fieldset>
+                    <legend>{@pre type="content" key="addcredit"/}</legend>
+ 												<form method="POST">
+                  <button type='input' onclick="javascript:addCredit()">{@pre type="content" key="addcredit"/}</button>
+                  <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+                  <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+                  <input type="hidden" name="_method" value="POST">
+                   </form>
+                </fieldset>
+            
+        </div>
+        
+<script>  
+$.ajaxSetup({
+    crossDomain: false, 
+    beforeSend: function(xhr, settings) {
+           
+    }
+});
+
+var csrftoken = $('#csrf').val();
+$(document).ready(function(){
+$
+});
+ function addCredit()
+        {
+        var now = convertDateTime(new Date());
+         $.post( "/admin/credit/add", {_csrf:csrftoken,typeid:1,amount:10,expiration:'2014-08-31',client:0}, function( data ) {
+					  return false;
+					},"json");
+          return false;
+        }
+</script>
+{/body}

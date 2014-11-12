@@ -1,0 +1,119 @@
+{>"layouts/admin_master" /}
+{<body}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+  <script>
+  $(function() {
+  $( ".datepicker" ).datepicker( );
+   $( ".datepicker" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+ 
+  });
+  </script>
+<div id='info'><div class='sucess'></div><div class='error'></div></div>
+     <form class="form-horizontal" id='makereward' method='POST'>
+     <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+     <input type="hidden" id='_method' name="_method" value="CREATE">
+	<input type='hidden' name='postback' value='1' />
+	  <!-- Prod Info-->
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="makereward"/}</legend>
+    		<!-- start date-->
+    		<div class="control-group">
+          <label class="control-label" for="startdate">{@pre type="content" key="startdate"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge required datepicker" name='startdate' id='startdate'>
+          </div>
+        </div>
+        <!-- enddate-->
+        <div class="control-group">
+					<label class="control-label" for="enddate">{@pre type="content" key="enddate"/}</label>
+            
+			<div class="controls">
+             <input type="text"  class="input-xlarge required datepicker" name='enddate' id='enddate'>
+           </div>
+         </div>
+       	<!-- number-->
+        <div class="control-group">
+					<label class="control-label" for="number">{@pre type="content" key="number"/}</label>
+            
+				<div class="controls">
+             <input type="text"  class="input-xlarge required" name='number' id='number'>
+           </div>
+         </div>
+        
+         <div id="reward-list" style='display:none'> </div>
+          <!-- Button -->
+          <div class="controls">
+	          <div class="col-xs-12 col-sm-6 col-md-6">
+	          	<button type='button' id='makelist' onclick='javascript:return makerewardlist();' class="btn btn-success"><i class="icon-white icon-hand-right"></i> {@pre type="content" key="makelist"/}</button>
+	          </div>
+	          <div class="col-xs-12 col-sm-6 col-md-6">
+	            <button type='button' id='submit' onclick='javascript:return sendList();' class="btn btn-success"><i class="icon-white icon-hand-right"></i> {@pre type="content" key="submit"/}</button>
+	          </div>
+          </div>
+          
+    
+	</div>
+    </fieldset>
+  </form>
+        <script>  
+        function makerewardlist(){
+	    var startdate = $('#startdate').val();
+	    var enddate = $('#enddate').val();
+	    var number = $('#number').val();
+         $.get( "/admin/activity/comment/make?startdate=" + startdate + "&enddate=" + enddate + "&number=" + number,{}, function( data ) {
+        
+            if(data)
+            {
+              var append = "<table class='table table-bordered table-hover' style='margin-top:10px;'><thead><tr>
+              <th>{@pre type="content" key="check"/}</th>
+              <th>{@pre type="content" key="username"/}</th>
+              <th>{@pre type="content" key="phone"/}</th>
+              <th>{@pre type="content" key="token"/}</th></tr>
+              </thead><tbody>";
+            	for(var i = 0; i < data.length; i++)
+            	{
+            	 append += "<tr><td class='check'><input type='checkbox' checked/></td><td class='name'>" + data[i]['name'] + "</td><td class='phone'>" + data[i]['phone'] + "</td><td class='token'>" + data[i]['token'] + "</td></tr>";
+            	}
+            	append += "</tbody></table";
+            	$('#reward-list').html(append).show();
+            }
+					  return false;
+					},"json");
+        }
+			function sendList(){
+			
+			$( "#reward-list tbody tr" ).each(function( index ) {
+			      var is_checked =  $(this).find('.check input').is(':checked');
+						if(is_checked){
+	  					var name = $( this ).find('.name').text(); 
+	  					var phone = $( this ).find('.phone').text(); 
+	  					var token = $( this ).find('.token').text(); 
+	  					sendSMS(name,phone, token);
+  					 }
+				});
+			}
+			
+			function sendSMS(name,phone, token)
+			{
+				var msg = "感谢参与评论活动，获得意大利Stickhouse价值25元冰淇淋一份。获取代码为" + token;
+				 $.get( "http://112.124.32.175/shengzhu/wechat/Util/Proxy/SMS/SendMsg_GET.php?smsMob=" + phone + "&smsText=" + msg  ,{}, function( data ) {
+        
+            if(data)
+            {
+              alert(data);
+              if(data > 0)
+              {
+              
+              }
+            }
+					  return false;
+					},"json");
+			}
+      function validate(){
+      return true;
+      }
+        </script>
+{/body}

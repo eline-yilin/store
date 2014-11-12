@@ -1,0 +1,193 @@
+{>"layouts/master" /}
+
+{<body}
+<style>
+*轮播广告css*/
+.scroll-wrapper {
+	width:100%;
+	margin:0 auto;
+	overflow:hidden
+}
+.scroll-wrapper .scroller {
+	list-style:none
+}
+.scroll-wrapper .scroller li {
+	float:left;
+	text-align:center
+}
+.scroll-wrapper .scroller li img {
+	width:100%;
+	min-width:320px;
+	height:auto!important;
+	max-height:240px
+}
+.banner {
+	position:relative;
+	width:100%;
+	overflow:hidden
+}
+.new-banner-num {
+	position:absolute;
+	left:0;
+	bottom:15px;
+	width:100%;
+	height:10px;
+	text-align:center
+}
+.new-banner-num .new-tbl-cell {
+	display:inline-block;
+	width:7px;
+	height:7px;
+	margin-left:7px;
+	border-radius:6px;
+	background-color:#fff;
+	text-indent:-9999px
+}
+.new-banner-num .new-tbl-cell a {
+	display:block
+}
+.new-banner-num .new-tbl-cell.on {
+	background-color:#e4393c
+}
+</style>
+   <div style='display:none'><img src='' alt='logo'></div>
+   <div>
+
+ 	<div class="banner scroll-wrapper" id="idContainer2" ontouchstart="touchStart(event)" ontouchmove="touchMove(event);" ontouchend="touchEnd(event);">
+       <ul class="scroller" style="width:{total}00%" id="idSlider2">
+        {#items}
+	      <li><a href={url}><img style="width:320px;" src="{img}"/></a></li>  
+	      {/items}  
+       </ul>       
+        <ul class="new-banner-num new-tbl-type" id="idNum">
+        </ul>
+    </div>   
+  </div>      
+  <input type="hidden" value="{total}" id="activity"/>
+  <div style='margin-top:20px;'></div>
+  <div class="control-group" >
+          <!-- Text input-->
+          
+          <!-- search-->
+		
+          <div class="controls center" style='text-align:center'>
+            <input type="text" placeholder="输入店铺/菜名进行搜索" size="35" maxlength="255" class="" name='search' id='search' style='margin-right:10px;'>
+          	<i class="icon-black icon-search" onclick='javascript:jumptoquery();'></i>
+          </div>
+  </div>
+  <div class="campaign">
+  <h2 id="activityheader">近期活动</h2>
+  <div class='row events'>
+   {#news}
+	     <div class="col-xs-6 col-sm-6 col-md-6">
+	      <div class='img-container'><a href='{url}'><img src='{@formatImg value="{img}" /} '/></a></div>
+	      <div class='img-desc'>
+	      	<div><a href='/entity/id/{id}' >{name}</a> </div>
+	      	<div>{@formatDate value="{start_date}" /} / {@formatDate value="{end_date}" /}</div>
+	        <div>{content}</div>
+	       </div>
+
+	     
+	    </div> 
+	      {/news} 
+  </div>
+  
+  </div>
+   
+	    
+	  
+	    
+   </div>
+   <script>
+   
+	var picCount = $("#activity").val();
+	$(".pic-num1").css("width",(picCount*30)+"px");
+	var forEach = function(array, callback){
+		for (var i = 0, len = array.length; i < len; i++) { callback.call(this, array[i], i); }
+	};
+	var st = createPicMove("idContainer2", "idSlider2", picCount);	
+	var nums = [];
+
+	for(var i = 0, n = st._count - 1; i <= n;i++){
+		var li = document.createElement("li");
+		nums[i] = document.getElementById("idNum").appendChild(li);
+	}
+
+	st.onStart = function(){
+		forEach(nums, function(o, i){ o.className = st.Index == i ? "new-tbl-cell on" : "new-tbl-cell"; })
+	};
+	
+	$("#idSlider2").css("position","relative");
+	
+	var _initX = 0;
+	var _finishX = 0;
+	var _startX = 0;
+	var _startY = 0;
+	function touchStart(event) {
+		_startX = event.touches[0].clientX;
+		_startY = event.touches[0].clientY;
+		_initX = _startX;
+	}
+	function touchMove(event) {
+		var touches = event.touches;
+		var _endX = event.touches[0].clientX;
+		var _endY = event.touches[0].clientY;
+		if(Math.abs(_endY-_startY)>Math.abs(_endX-_startX)){
+			return;		
+		}
+		event.preventDefault();
+		_finishX = _endX;
+		var _absX = Math.abs(_endX-_startX);
+		var lastX = $('#idSlider2').css('left').replace('px','');
+		if(_startX>_endX){
+			st.Stop();
+			$('#idSlider2').css('left',(parseInt(lastX)-_absX)+'px');
+		}else{
+			st.Stop();
+			$('#idSlider2').css('left',(parseInt(lastX)+_absX)+'px');
+		} 
+		_startX = _endX;
+	}
+
+	function touchEnd(event) {
+		if(_finishX==0){
+			return;
+		}
+		if(_initX>_finishX){
+			bindEvent(_initX,_finishX);
+		}else if(_initX<_finishX){
+			bindEvent(_initX,_finishX);
+		}
+		_initX = 0;
+		_finishX = 0;
+	}
+
+    function bindEvent(start,end){
+         if (start >= end) {
+                   st.Next();
+                } else {
+                    st.Previous();
+                }
+    }
+	
+	var resetScrollEle = function(){
+		$("#shelper").css("width",$("#newkeyword").width()+"px");
+		var slider2Li = $("#idSlider2 li");
+		slider2Li.css("width",$(".scroll-wrapper").width()+"px");
+		$("#shelper").css("width",$("#newkeyword").width()+"px");
+	};
+	
+	window.addEventListener("resize",function(){
+		st.Change = st._slider.offsetWidth/st._count;
+		st.Next();
+		resetScrollEle();
+	});
+	window.addEventListener("orientationchange",function(){
+		st.Change = st._slider.offsetWidth/st._count;
+		st.Next();
+		resetScrollEle();
+	});
+	resetScrollEle();
+	st.Run();
+</script>
+{/body}

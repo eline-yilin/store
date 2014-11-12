@@ -1,0 +1,51 @@
+{>"layouts/master" /}
+{<body}
+    <h1 style='display:none;'>{@pre type="content" key="greeting"/}</h1>
+     <div class="products">
+            {?credits}
+                <fieldset>
+                    <legend>Credit</legend>
+                        {#credits}
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <div id="appointment{id}" class="product-item">
+                                <form method="POST" action="/cart">
+                                    <input type="hidden" name="item_id" value="{id}">
+																					<div class="new-tile primary-tile">
+																						<span class="item-title">{amount}</span><span class="item-sub">{expiration}</span>
+																					</div>
+																					<div class="new-tile">
+																						 product description:{updated}
+																					</div>
+																		<div style='margin-top:10px'></div>
+																	  <button onclick="javascript:return addCart({id});" class="btn btn-success btn-mini"><i class="icon-white icon-heart"></i> add to cart</button>
+                                    <input type="submit" value="Delete" style='display:none'>
+                                    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+                                    <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+                                    <input type="hidden" name="_method" value="POST">
+                                </form>
+                            </div>
+                        </div>
+                        {/credits}
+                </fieldset> 
+            {:else}
+                There is no history :(
+            {/credits}
+        </div>
+        <script>  
+$.ajaxSetup({
+    crossDomain: false, 
+    beforeSend: function(xhr, settings) {
+           
+    }
+});
+
+var csrftoken = $('#csrf').val();
+        function addCart(id, event)
+        {
+         $.post( "/cart", {_csrf:csrftoken}, function( data ) {
+					  return false;
+					},"json");
+          return false;
+        }
+        </script>
+{/body}

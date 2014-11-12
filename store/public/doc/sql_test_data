@@ -1,0 +1,8 @@
+insert into product (category_id,name,description,img,price) values (0,'test prod1','this is a test', '', 12.5)
+
+insert into user (name,openid,gender,birthday,clientid) values('test1','abcd','m','1994-01-04',1)
+
+insert into credit_history (typeid,expiration,amount,userid, updated,client) values(1,'1994-01-04',10,0,'2014-06-22',1)
+insert into credit_history (typeid,expiration,amount,userid, updated,client) values(1,'1994-01-04',-3,0,'2014-06-22',1)
+insert into entity_category (name) values ('餐饮');
+insert into entity_category (name,parent_id) values ('西餐'，1);

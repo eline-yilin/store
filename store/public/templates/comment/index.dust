@@ -1,0 +1,57 @@
+{>"layouts/master" /}
+{<body}
+    <h1 style='display:none;'>{@pre type="content" key="greeting"/}</h1>
+     <div class="products">
+            {?items}
+                <fieldset>
+                    <legend>{@pre type="content" key="commentlist"/}</legend>
+                        {#items}
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div id="appointment{id}" class="product-item">
+                                <form method="POST" action="/cart">
+                                    <input type="hidden" name="item_id" value="{id}">
+																					<div class="new-tile primary-tile">
+																						<span class="item-sub">{title}</span>
+																					</div>
+																					<div class="new-tile">
+																						<label class='control-label'> {@pre type="content" key="content"/}: </label>
+																						{content}
+																					</div>
+																				
+																		<div style='margin-top:10px'></div>
+                                   
+                                    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+                                    <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+                                    <input type="hidden" name="_method" value="POST">
+                                </form>
+                            </div>
+                        </div>
+                        {/items}
+                </fieldset>
+            {:else}
+                There are no products :(
+            {/items}
+        </div>
+        <script>  
+$.ajaxSetup({
+    crossDomain: false, 
+    beforeSend: function(xhr, settings) {
+           
+    }
+});
+
+var csrftoken = $('#csrf').val();
+        function addCart(id)
+        {
+         $.post( "/cart", {_csrf:csrftoken}, function( data ) {
+					  return false;
+					},"json");
+          return false;
+        }
+        function goToDetail(id)
+        {
+         window.location = "/product/id/" + id;
+         return false;
+        }
+        </script>
+{/body}
